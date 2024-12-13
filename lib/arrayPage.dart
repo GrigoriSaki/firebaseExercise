@@ -45,28 +45,46 @@ class _ArrayPageState extends State<ArrayPage> {
                   builder: (context, taskSnapshot) {
                     if (taskSnapshot.connectionState ==
                         ConnectionState.waiting) {
-                      return CircularProgressIndicator();
+                      return Center(
+                          child: Container(
+                              height: 100,
+                              width: 100,
+                              child: CircularProgressIndicator()));
                     } else {
                       final taskDoc = taskSnapshot.data!.docs;
                       return ListView.builder(
-                          itemCount: 17,
+                          itemCount: 1,
                           itemBuilder: (context, index) {
-                            return Card(
-                              color: Colors.white.withOpacity(0.8),
-                              elevation: 7,
-                              child: ListTile(
-                                title: Text(
-                                  taskDoc[0]["umyc sie"],
-                                  style: TextStyle(
-                                      fontSize: 22, color: Colors.black),
-                                ),
-                                subtitle: Text(
-                                  taskDoc[0]["zjesc"],
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.grey[800]),
-                                ),
-                              ),
-                            );
+                            final doc = taskDoc.firstWhere(
+                                (document) => document.id == widget.dayName);
+                            final data = doc.data() as Map<String, dynamic>;
+
+                            if (data != null) {
+                              return Column(
+                                children: data.entries.map((entry) {
+                                  return Card(
+                                    color: Colors.white.withOpacity(0.8),
+                                    elevation: 7,
+                                    child: ListTile(
+                                      title: Text(
+                                        entry.value.toString(), // Wartość pola
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: Text(
+                                        entry.key, // Klucz pola
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              );
+                            } else {
+                              return Center(
+                                child: Text("N O  T A S K S "),
+                              );
+                            }
                           });
                     }
                   }),
