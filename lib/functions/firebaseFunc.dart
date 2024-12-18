@@ -48,7 +48,7 @@ createData() async {
   List<String> days = [
     "Monday",
     "Tuesday",
-    "Wendesday",
+    "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
@@ -66,4 +66,11 @@ addField(String dayOfWeek, String taskName, String perfName) async {
       .collection("tasks")
       .doc(dayOfWeek)
       .update({taskName: perfName});
+}
+
+delete(String taskName, String dayOfWeek) async {
+  await FirebaseFirestore.instance
+      .collection("tasks")
+      .doc(dayOfWeek)
+      .update({taskName: FieldValue.delete()});
 }

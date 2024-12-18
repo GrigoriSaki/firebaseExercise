@@ -103,6 +103,9 @@ class _FirstPageState extends State<FirstPage> {
                   ElevatedButton(
                       onPressed: () {
                         addField(dayName, taskName.text, performerName.text);
+
+                        taskName.clear();
+                        performerName.clear();
                       },
                       child: Text(
                         ' ADD TASK ',
@@ -126,6 +129,7 @@ class _FirstPageState extends State<FirstPage> {
                                 builder: (BuildContext context) {
                               return ArrayPage(
                                 dayName: dayName,
+                                taskName: taskName.text,
                               );
                             }));
                           },

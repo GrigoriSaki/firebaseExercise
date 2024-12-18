@@ -2,11 +2,13 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:my_app/functions/firebaseFunc.dart';
 
 class ArrayPage extends StatefulWidget {
   String dayName;
-  ArrayPage({super.key, required this.dayName});
+  String taskName;
+  ArrayPage({super.key, required this.taskName, required this.dayName});
 
   @override
   State<ArrayPage> createState() => _ArrayPageState();
@@ -59,22 +61,41 @@ class _ArrayPageState extends State<ArrayPage> {
                                 (document) => document.id == widget.dayName);
                             final data = doc.data() as Map<String, dynamic>;
 
-                            if (data != null) {
+                            if (data.isNotEmpty) {
                               return Column(
                                 children: data.entries.map((entry) {
-                                  return Card(
-                                    color: Colors.white.withOpacity(0.8),
-                                    elevation: 7,
-                                    child: ListTile(
-                                      title: Text(
-                                        entry.value.toString(), // Wartość pola
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: Text(
-                                        entry.key, // Klucz pola
-                                        style: TextStyle(fontSize: 14),
+                                  return Slidable(
+                                    endActionPane: ActionPane(
+                                        motion: StretchMotion(),
+                                        children: [
+                                          SlidableAction(
+                                            onPressed: (context) {
+                                              setState(() {
+                                                delete(
+                                                    entry.key, widget.dayName);
+                                              });
+                                            },
+                                            icon: Icons.delete_outline,
+                                            backgroundColor: Colors.red,
+                                          )
+                                        ]),
+                                    child: Card(
+                                      color: Colors.white.withOpacity(0.8),
+                                      elevation: 7,
+                                      child: ListTile(
+                                        title: Text(
+                                          entry.value
+                                              .toString(), // Wartość pola
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        subtitle: Text(
+                                          entry.key, // Klucz pola
+                                          style: TextStyle(
+                                              fontSize: 19,
+                                              fontWeight: FontWeight.w400),
+                                        ),
                                       ),
                                     ),
                                   );
@@ -82,7 +103,20 @@ class _ArrayPageState extends State<ArrayPage> {
                               );
                             } else {
                               return Center(
-                                child: Text("N O  T A S K S "),
+                                child: Column(
+                                  children: const [
+                                    SizedBox(
+                                      height: 200,
+                                    ),
+                                    Text("N O  T A S K S ",
+                                        style: TextStyle(fontSize: 24)),
+                                    SizedBox(
+                                      height: 100,
+                                    ),
+                                    Text("FOR TODAY ;)",
+                                        style: TextStyle(fontSize: 20))
+                                  ],
+                                ),
                               );
                             }
                           });
