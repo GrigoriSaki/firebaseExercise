@@ -45,8 +45,8 @@ class _ChooseDayListState extends State<ChooseDayList> {
               value: "Friday",
               child: Text("Friday", style: TextStyle(fontSize: 18))),
           DropdownMenuItem(
-              value: "Saurday",
-              child: Text("Saurday", style: TextStyle(fontSize: 18))),
+              value: "Saturday",
+              child: Text("Saturday", style: TextStyle(fontSize: 18))),
           DropdownMenuItem(
               value: "Sunday",
               child: Text("Sunday", style: TextStyle(fontSize: 18))),
